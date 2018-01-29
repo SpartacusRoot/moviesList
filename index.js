@@ -1,14 +1,4 @@
-import { AppRegistry } from 'react-native';
-// import App from './App';
-import {  Tabs } from './config/route';
-import React, { Component } from 'react';
+import { AppRegistry } from 'react-native'
+import App from './src/App'
 
-class App extends Component {
-    render() {
-      return <Tabs />;
-    }
-  }
-  
- export default App;
-
-AppRegistry.registerComponent('secondReact', () => App);
+AppRegistry.registerComponent('secondReact', () => App)
