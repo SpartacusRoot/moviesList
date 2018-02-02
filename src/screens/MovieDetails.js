@@ -18,25 +18,50 @@ class MovieDetails extends React.Component {
   }
 */
 
- // static navigationOptions = ({ navigation }) => ({
-    // title: `${this.props.navigation.state.params.title}`,
+  // static navigationOptions = ({ navigation }) => ({
+  // title: `${this.props.navigation.state.params.title}`,
   //});
 
   state = {
-    data: [],
-    favMovies: [],
+    movies: [],
+    favMovies: []
   };
 
   addTofavorite = async () => {
     try {
-      await AsyncStorage.setItem("favMovies", JSON.stringify(this.state.data.title));
-      const value =  await AsyncStorage.getItem("favMovies");
-      this.setState({favMovies: this.state.data.title})
-      console.warn(value);
+      const movies = this.state.movies;
+      const movieSet = await AsyncStorage.setItem(
+        "favMovies",
+        JSON.stringify(movies)
+      );
+
+      let movieGet = await AsyncStorage.getItem("favMovies");
+      let movieGetString = JSON.stringify(movieGet);
+      this.setState({ favMovies: movieGet });
+      console.warn(this.state.favMovies);
     } catch (error) {
       console.error(error);
     }
   };
+
+  addTofavorite2 = async () => {
+    let movieArr = [];
+    let movieTitle = this.state.movies.title;
+    const movies = this.state.movies;
+    let movieGet = await AsyncStorage.getItem("favMovies");
+    let movieGetObj = JSON.stringify(movieGet);
+    movieArr.push(movieGetObj);
+    let movieCompare = movieArr.includes(movieTitle)
+    if(movieCompare === true){
+       console.warn('Il film inserito è già presente nei favoriti')
+    } else {
+      const movieSet = await AsyncStorage.setItem(
+        "favMovies",
+        JSON.stringify(movies)
+      );
+
+    }
+  }
 
   componentDidMount() {
     this.fetchApiDetails();
@@ -51,7 +76,7 @@ class MovieDetails extends React.Component {
         }?api_key=a74169393e0da3cfbc2c58c5feec63d7`
       );
       let json = await response.json();
-      this.setState({ data: json });
+      this.setState({ movies: json });
     } catch (error) {
       console.error(error);
     }
@@ -69,7 +94,7 @@ class MovieDetails extends React.Component {
           <Image
             source={{
               uri: `https://image.tmdb.org/t/p/w500/${
-                this.state.data.backdrop_path
+                this.state.movies.backdrop_path
               }`
             }}
             style={styles.image}
@@ -78,9 +103,7 @@ class MovieDetails extends React.Component {
             {this.props.navigation.state.params.title}
           </Text>
         </View>
-        <Text style={styles.overview}>{this.state.data.overview}</Text>
-
-
+        <Text style={styles.overview}>{this.state.movies.overview}</Text>
       </ScrollView>
     );
   }
