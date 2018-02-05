@@ -12,9 +12,10 @@ class FavoriteMovies extends React.Component {
     return (
       <ScrollView>
         <Button onPress={() => this.update} title="Update favorite Movies" />
-        <Text>{this.state.favMovies.title}</Text>
+
       </ScrollView>
     );
+
   }
   /*
   load = async () => {
@@ -43,7 +44,7 @@ class FavoriteMovies extends React.Component {
         const movies = JSON.parse(moviesGet);
 
         this.setState({ favMovies: movies });
-
+       // console.warn(this.state.favMovies)
       } catch (error) {
         console.error(error);
       }

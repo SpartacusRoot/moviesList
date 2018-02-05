@@ -27,41 +27,66 @@ class MovieDetails extends React.Component {
     favMovies: []
   };
 
+  /*
   addTofavorite = async () => {
     try {
-      const movies = this.state.movies;
+    //  const movies = this.state.movies;
       const movieSet = await AsyncStorage.setItem(
         "favMovies",
         JSON.stringify(movies)
       );
 
       let movieGet = await AsyncStorage.getItem("favMovies");
-      let movieGetString = JSON.stringify(movieGet);
+      let movieGetString = JSON.parse(movieGet);
       this.setState({ favMovies: movieGet });
-      console.warn(this.state.favMovies);
+      console.warn(typeof (movieGetString));
     } catch (error) {
       console.error(error);
     }
   };
+*/
+
+  SaveDataToLocalStorage = async (movies) => {
+    let movieArr = [];
+    movieArr = await AsyncStorage.getItem("favMovies");
+    movieArrObj = JSON.parse(movieArr);
+    movieArrObj.push(movies);
+    let setMovies = await AsyncStorage.setItem(
+      "favMovies",
+      JSON.stringify(movieArr)
+    );
+
+  };
 
   addTofavorite2 = async () => {
-    let movieArr = [];
-    let movieTitle = this.state.movies.title;
-    const movies = this.state.movies;
-    let movieGet = await AsyncStorage.getItem("favMovies");
-    let movieGetObj = JSON.stringify(movieGet);
-    movieArr.push(movieGetObj);
-    let movieCompare = movieArr.includes(movieTitle)
-    if(movieCompare === true){
-       console.warn('Il film inserito è già presente nei favoriti')
-    } else {
-      const movieSet = await AsyncStorage.setItem(
-        "favMovies",
-        JSON.stringify(movies)
-      );
+    try {
+      let moviesArray= [];
+      const movies = this.state.movies;
+      //  console.warn(movies.id);
+      const moviesGet = await AsyncStorage.getItem("favMovies");
+      if (moviesGet == null) {
+        moviesArray = [];
+      } else {
+        moviesArray = JSON.parse(moviesGet);
+      }
 
+      let compareArr = moviesArray.some(x => x.id === movies.id)
+      console.warn(compareArr)
+      if(compareArr === true){
+        console.warn("già esiste");
+      } else if (compareArr === false){
+        moviesArray.push(this.state.movies);
+        await AsyncStorage.setItem("favMovies", JSON.stringify(moviesArray));
+      }
+
+
+
+      AsyncStorage.getItem("favMovies").then((res) => console.warn(JSON.parse(res).length));
+
+    } catch (error) {
+      console.error(error);
     }
-  }
+  };
 
   componentDidMount() {
     this.fetchApiDetails();
@@ -87,7 +112,7 @@ class MovieDetails extends React.Component {
       <ScrollView>
         <View style={styles.container}>
           <Button
-            onPress={this.addTofavorite}
+            onPress={this.addTofavorite2}
             title="aggiungi ai favoriti"
             accessibilityLabel="Aggiungi ai favoriti i tuoi film preferiti "
           />
