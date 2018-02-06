@@ -12,6 +12,10 @@ import {
 } from "react-native";
 
 class MovieDetails extends React.Component {
+  static navigationOptions = {
+    title: "Movies details"
+  };
+
   /*
   static propTypes = {
     movie: PropTypes.object.isRequired,
@@ -73,7 +77,7 @@ class MovieDetails extends React.Component {
       let compareArr = moviesArray.some(x => x.id === movies.id)
       console.warn(compareArr)
       if(compareArr === true){
-        console.warn("già esiste");
+        alert("il film scelto è già stato inserito nella lista dei favoriti");
       } else if (compareArr === false){
         moviesArray.push(this.state.movies);
         await AsyncStorage.setItem("favMovies", JSON.stringify(moviesArray));
@@ -81,7 +85,7 @@ class MovieDetails extends React.Component {
 
 
 
-      AsyncStorage.getItem("favMovies").then((res) => console.warn(JSON.parse(res).length));
+    //  AsyncStorage.getItem("favMovies").then((res) => console.warn(JSON.parse(res).length));
 
     } catch (error) {
       console.error(error);
