@@ -8,33 +8,49 @@ import {
   Button,
   StyleSheet,
   Image,
-  AsyncStorage
+  AsyncStorage,
+  RefreshControl
 } from "react-native";
 
 class TopRated extends React.Component {
   static navigationOptions = {
-    title: "Top Rated"
+    title: "Top Rated",
+
   };
 
   state = {
     data: [],
+    page: 1,
+    isFetching: false,
   };
 
   componentDidMount() {
     this.fetchApi();
   }
 
+  onRefresh() {
+    console.warn('refreshing')
+    this.setState({isFetching: true}, this.fetchApi);
+
+  }
+
   fetchApi = async () => {
+   // const page = this.state;
     const response = await fetch(
-      "https://api.themoviedb.org/3/movie/top_rated?api_key=a74169393e0da3cfbc2c58c5feec63d7"
+      `https://api.themoviedb.org/3/movie/top_rated?api_key=a74169393e0da3cfbc2c58c5feec63d7&page=${this.state.page}`
     );
     const json = await response.json();
-    this.setState({ data: json.results });
+    this.setState({ data: [...this.state.data,...json.results],
+                    isFetching: false, page: 1 });
   };
 
   goToMovie = () => {
     this.props.navigation.navigate("MovieDetails");
   };
+
+  loadMoreMovies = () => {
+    this.setState({ page: this.state.page + 1}, this.fetchApi)
+  }
 
 
 
@@ -83,15 +99,23 @@ class TopRated extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <FlatList
           style={styles.list_container}
           data={this.state.data}
           ItemSeparatorComponent={this.renderSeparator}
           keyExtractor={(item, index) => index}
           renderItem={this.renderItem.bind(this)}
+          onEndReached={this.loadMoreMovies}
+          onEndReachedThreshold={0.5}
+          refreshControl= {
+            <RefreshControl
+            refreshing={this.state.isFetching}
+            onRefresh={this.onRefresh.bind(this)}
+            />
+            }
         />
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -99,7 +123,7 @@ class TopRated extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 55
+    paddingTop: 55
   },
   itemBlock: {
     paddingBottom: 30
@@ -119,6 +143,7 @@ const styles = StyleSheet.create({
     color: "#212121",
     fontSize: 25,
     textAlign: "left"
+
   },
   itemLastMessage: {
     fontSize: 30,
