@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {
   Button,
@@ -17,7 +18,7 @@ class FavoriteMovies extends React.Component {
   static navigationOptions = {
     title:"Favorite movies",
     headerStyle: {
-      backgroundColor: "red",
+      backgroundColor: "#ffa000",
     },
     headerTintColor: "white",
     headerTintStyle: {
@@ -26,8 +27,18 @@ class FavoriteMovies extends React.Component {
      tabBarIcon:(
       <Icon name="favorite" color={"#ffc107"} size={25} />
      )
-
    };
+
+   static propTypes = {
+    movies: PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+      backdrop_path: PropTypes.string,
+      vote_average: PropTypes.string
+    }),
+    isFetching: PropTypes.bool,
+    favMovies: PropTypes.objectOf(PropTypes.movies),
+  }
 
   state = {
     favMovies: [],
@@ -50,7 +61,14 @@ class FavoriteMovies extends React.Component {
     let { item, index } = favMovies;
     return (
       <View style={styles.viewContainer}>
-        <TouchableOpacity style={styles.itemBlock}>
+        <TouchableOpacity style={styles.itemBlock}
+        onPress={() =>
+          this.props.navigation.navigate("MovieDetails", {
+            id: item.id,
+            title: item.title
+          })
+        }
+        >
           <Image
             style={styles.itemImage}
             source={{
@@ -91,7 +109,6 @@ class FavoriteMovies extends React.Component {
   }
 
   onRefresh() {
-    console.warn("refreshing");
     this.setState({ isFetching: true }, this.update);
   }
 
@@ -101,9 +118,7 @@ class FavoriteMovies extends React.Component {
       try {
         const moviesGet = await AsyncStorage.getItem("favMovies");
         const movies = JSON.parse(moviesGet);
-
         this.setState({ favMovies: movies, isFetching: false });
-        // console.warn(this.state.favMovies[0].backdrop_path)
       } catch (error) {
         this.setState({ error, isFetching: false });
       }

@@ -4,6 +4,7 @@ import MovieDetails from "../screens/MovieDetails";
 import TopRated from "../screens/TopRated";
 import FavoriteMovies from "../screens/FavoriteMovies";
 import Icon from "react-native-vector-icons/MaterialIcons";
+
 export const FeedStack = StackNavigator({
   TopRated: {
     screen: TopRated
@@ -12,7 +13,25 @@ export const FeedStack = StackNavigator({
     screen: MovieDetails
   },
 
+},
+{
+ initialRouteName: 'TopRated',
+  navigationOptions: {
+    headerStyle: {
+      backgroundColor: "#ffa000",
+    },
+    headerTintColor: "white",
+    headerTintStyle: {
+     fontWeight: 'bold',
+    },
+  }
 });
+
+export const FeedStackFav = StackNavigator({
+  FavoriteMovies: {
+    screen: FavoriteMovies,
+  }
+})
 
 export const Tabs = TabNavigator(
   {
@@ -20,7 +39,7 @@ export const Tabs = TabNavigator(
       screen: FeedStack,
     },
     FavoriteMovies: {
-      screen: FavoriteMovies
+      screen: FeedStackFav,
     }
   },
   {

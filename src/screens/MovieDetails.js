@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import {
   Button,
   ScrollView,
@@ -15,36 +16,24 @@ class MovieDetails extends React.Component {
   static navigationOptions = {
     title: "Movies details",
     tabBarVisible: false,
-    headerStyle: {
-      backgroundColor: "#ffa000"
-    },
-    headerTintColor: "white",
-    headerTintStyle: {
-      fontWeight: "bold"
-    }
+    tabBarIcon:(
+      <Icon name="movie" color={"#ffc107"} size={25} />
+     )
   };
 
-  /*
+
   static propTypes = {
-    movie: PropTypes.object.isRequired,
+    movie: PropTypes.object,
+    favMovies: PropTypes.object,
+    moviesArray: PropTypes.arrayOf(PropTypes.favMovies),
   }
-*/
+
 
   state = {
     movies: [],
     favMovies: []
   };
 
-  SaveDataToLocalStorage = async movies => {
-    let movieArr = [];
-    movieArr = await AsyncStorage.getItem("favMovies");
-    movieArrObj = JSON.parse(movieArr);
-    movieArrObj.push(movies);
-    let setMovies = await AsyncStorage.setItem(
-      "favMovies",
-      JSON.stringify(movieArr)
-    );
-  };
 
   addTofavorite2 = async () => {
     try {
@@ -63,6 +52,7 @@ class MovieDetails extends React.Component {
       } else if (compareArr === false) {
         moviesArray.push(this.state.movies);
         await AsyncStorage.setItem("favMovies", JSON.stringify(moviesArray));
+        alert("Film salvato nei favoriti");
       }
     } catch (error) {
       console.error(error);

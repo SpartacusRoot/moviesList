@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {
   View,
@@ -14,15 +15,19 @@ import {
 } from "react-native";
 
 class TopRated extends React.Component {
+  static propTypes = {
+    movies: PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+      backdrop_path: PropTypes.string,
+      vote_average: PropTypes.string
+    }),
+    isFetching: PropTypes.bool,
+    page: PropTypes.number,
+  }
+
   static navigationOptions = {
    title:"Top Rated",
-   headerStyle: {
-    backgroundColor: "#ffa000",
-  },
-  headerTintColor: "white",
-  headerTintStyle: {
-   fontWeight: 'bold',
-  },
     tabBarIcon:(
      <Icon name="movie" color={"#ffc107"} size={25} />
     )
@@ -30,7 +35,7 @@ class TopRated extends React.Component {
   };
 
   state = {
-    data: [],
+    movies: [],
     page: 1,
     isFetching: false
   };
@@ -40,7 +45,6 @@ class TopRated extends React.Component {
   }
 
   onRefresh() {
-    console.warn("refreshing");
     this.setState({ isFetching: true }, this.fetchApi);
   }
 
@@ -53,7 +57,7 @@ class TopRated extends React.Component {
     );
     const json = await response.json();
     this.setState({
-      data: [...this.state.data, ...json.results],
+      movies: [...this.state.movies, ...json.results],
       isFetching: false,
       page: 1
     });
@@ -67,8 +71,8 @@ class TopRated extends React.Component {
     this.setState({ page: this.state.page + 1 }, this.fetchApi);
   };
 
-  renderItem(data) {
-    let { item, index } = data;
+  renderItem(movies) {
+    let { item, index } = movies;
     return (
       <View style={styles.itemBlock}>
         <TouchableOpacity
@@ -99,7 +103,7 @@ class TopRated extends React.Component {
       <View style={styles.container}>
         <FlatList
           style={styles.list_container}
-          data={this.state.data}
+          data={this.state.movies}
           keyExtractor={(item, index) => index}
           renderItem={this.renderItem.bind(this)}
           onEndReached={this.loadMoreMovies}
@@ -167,8 +171,8 @@ const styles = StyleSheet.create({
     bottom: 40,
     left: 12,
     textShadowColor: '#FFFFFF',
-  textShadowOffset: {width: 2, height: 2},
-  textShadowRadius: 20,
+  textShadowOffset: {width: -2, height: 1},
+  textShadowRadius: 10,
   }
 });
 
