@@ -3,20 +3,21 @@ import { TabNavigator, StackNavigator } from "react-navigation";
 import MovieDetails from "../screens/MovieDetails";
 import TopRated from "../screens/TopRated";
 import FavoriteMovies from "../screens/FavoriteMovies";
-
+import Icon from "react-native-vector-icons/MaterialIcons";
 export const FeedStack = StackNavigator({
   TopRated: {
     screen: TopRated
   },
   MovieDetails: {
     screen: MovieDetails
-  }
+  },
+
 });
 
 export const Tabs = TabNavigator(
   {
     TopRatedMovies: {
-      screen: FeedStack
+      screen: FeedStack,
     },
     FavoriteMovies: {
       screen: FavoriteMovies
@@ -26,7 +27,17 @@ export const Tabs = TabNavigator(
     tabBarPosition: "bottom",
     animationEnabled: true,
     tabBarOptions: {
-      activeTintColor: "#e91e63"
+      style: {
+        backgroundColor: '#212121',
+      },
+      labelStyle: {
+        fontSize: 15,
+      },
+   //   activeTintColor: "#009688",
+   //   inactiveTintColor: "black",
+   //   activeBackgroundColor:"#ffc107",
+      showIcon: true,
+
     }
   }
 );

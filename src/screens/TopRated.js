@@ -1,4 +1,5 @@
 import React from "react";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import {
   View,
   Text,
@@ -14,14 +15,24 @@ import {
 
 class TopRated extends React.Component {
   static navigationOptions = {
-    title: "Top Rated",
+   title:"Top Rated",
+   headerStyle: {
+    backgroundColor: "#ffa000",
+  },
+  headerTintColor: "white",
+  headerTintStyle: {
+   fontWeight: 'bold',
+  },
+    tabBarIcon:(
+     <Icon name="movie" color={"#ffc107"} size={25} />
+    )
 
   };
 
   state = {
     data: [],
     page: 1,
-    isFetching: false,
+    isFetching: false
   };
 
   componentDidMount() {
@@ -29,19 +40,23 @@ class TopRated extends React.Component {
   }
 
   onRefresh() {
-    console.warn('refreshing')
-    this.setState({isFetching: true}, this.fetchApi);
-
+    console.warn("refreshing");
+    this.setState({ isFetching: true }, this.fetchApi);
   }
 
   fetchApi = async () => {
-   // const page = this.state;
+    // const page = this.state;
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/top_rated?api_key=a74169393e0da3cfbc2c58c5feec63d7&page=${this.state.page}`
+      `https://api.themoviedb.org/3/movie/top_rated?api_key=a74169393e0da3cfbc2c58c5feec63d7&page=${
+        this.state.page
+      }`
     );
     const json = await response.json();
-    this.setState({ data: [...this.state.data,...json.results],
-                    isFetching: false, page: 1 });
+    this.setState({
+      data: [...this.state.data, ...json.results],
+      isFetching: false,
+      page: 1
+    });
   };
 
   goToMovie = () => {
@@ -49,22 +64,7 @@ class TopRated extends React.Component {
   };
 
   loadMoreMovies = () => {
-    this.setState({ page: this.state.page + 1}, this.fetchApi)
-  }
-
-
-
-  renderSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: "86%",
-          backgroundColor: "#CED0CE",
-          marginLeft: "14%"
-        }}
-      />
-    );
+    this.setState({ page: this.state.page + 1 }, this.fetchApi);
   };
 
   renderItem(data) {
@@ -79,19 +79,16 @@ class TopRated extends React.Component {
             })
           }
         >
+
           <Image
             style={styles.itemImage}
             source={{
               uri: `https://image.tmdb.org/t/p/w500/${item.backdrop_path}`
             }}
           />
-          <View style={styles.itemMeta}>
-            <Text style={styles.itemName}>
-              {item.title}
-            </Text>
-            <Text style={styles.itemLastMessage}>{item.vote_average}</Text>
-          </View>
-        </TouchableOpacity>
+            <Text style={styles.itemName}>{item.title}</Text>
+            <Text style={styles.itemLastMessage}><Icon name='star' style={styles.icons}  />{item.vote_average}</Text>
+            </TouchableOpacity>
       </View>
     );
   }
@@ -103,17 +100,16 @@ class TopRated extends React.Component {
         <FlatList
           style={styles.list_container}
           data={this.state.data}
-          ItemSeparatorComponent={this.renderSeparator}
           keyExtractor={(item, index) => index}
           renderItem={this.renderItem.bind(this)}
           onEndReached={this.loadMoreMovies}
           onEndReachedThreshold={0.5}
-          refreshControl= {
+          refreshControl={
             <RefreshControl
-            refreshing={this.state.isFetching}
-            onRefresh={this.onRefresh.bind(this)}
+              refreshing={this.state.isFetching}
+              onRefresh={this.onRefresh.bind(this)}
             />
-            }
+          }
         />
       </View>
     );
@@ -123,32 +119,56 @@ class TopRated extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 55
+    paddingTop: 40,
+    backgroundColor: "#E0E0E0",
   },
   itemBlock: {
-    paddingBottom: 30
+    flex:1,
+    alignItems: "center",
+    alignItems:'center',
+
+  },
+  icons: {
+    color: '#ffc107',
+    fontSize: 30,
+    textShadowColor: '#000',
+  textShadowOffset: {width: 2, height: 2},
+  textShadowRadius: 20,
   },
   itemImage: {
-    width: 250,
-    height: 150,
-    borderRadius: 5,
-    padding: 5,
-    marginLeft: 55
+    width: 400,
+    height: 200,
+    borderRadius: 10,
+    opacity: 1,
+
+
   },
   itemMeta: {
-    marginLeft: 55,
-    padding: 5
+   width: 400,
+   borderRadius: 10,
+   backgroundColor: "black",
+
   },
   itemName: {
-    color: "#212121",
+    color: "#FFFFFF",
     fontSize: 25,
-    textAlign: "left"
-
+    textAlign: "center",
+    position: "absolute",
+    bottom: 80,
+    left: 12,
+    textShadowColor: '#000',
+  textShadowOffset: {width: 2, height: 2},
+  textShadowRadius: 2,
   },
   itemLastMessage: {
     fontSize: 30,
-    color: "#D32F2F",
-    textAlign: "left"
+    color: "#212121",
+    textAlign: "left",
+    bottom: 40,
+    left: 12,
+    textShadowColor: '#FFFFFF',
+  textShadowOffset: {width: 2, height: 2},
+  textShadowRadius: 20,
   }
 });
 

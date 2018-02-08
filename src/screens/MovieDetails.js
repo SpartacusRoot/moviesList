@@ -13,7 +13,15 @@ import {
 
 class MovieDetails extends React.Component {
   static navigationOptions = {
-    title: "Movies details"
+    title: "Movies details",
+    tabBarVisible: false,
+    headerStyle: {
+      backgroundColor: "#ffa000"
+    },
+    headerTintColor: "white",
+    headerTintStyle: {
+      fontWeight: "bold"
+    }
   };
 
   /*
@@ -22,33 +30,10 @@ class MovieDetails extends React.Component {
   }
 */
 
-  // static navigationOptions = ({ navigation }) => ({
-  // title: `${this.props.navigation.state.params.title}`,
-  //});
-
   state = {
     movies: [],
     favMovies: []
   };
-
-  /*
-  addTofavorite = async () => {
-    try {
-    //  const movies = this.state.movies;
-      const movieSet = await AsyncStorage.setItem(
-        "favMovies",
-        JSON.stringify(movies)
-      );
-
-      let movieGet = await AsyncStorage.getItem("favMovies");
-      let movieGetString = JSON.parse(movieGet);
-      this.setState({ favMovies: movieGet });
-      console.warn(typeof (movieGetString));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-*/
 
   SaveDataToLocalStorage = async movies => {
     let movieArr = [];
@@ -65,7 +50,6 @@ class MovieDetails extends React.Component {
     try {
       let moviesArray = [];
       const movies = this.state.movies;
-      //  console.warn(movies.id);
       const moviesGet = await AsyncStorage.getItem("favMovies");
       if (moviesGet == null) {
         moviesArray = [];
@@ -74,15 +58,12 @@ class MovieDetails extends React.Component {
       }
 
       let compareArr = moviesArray.some(x => x.id === movies.id);
-      console.warn(compareArr);
       if (compareArr === true) {
         alert("il film scelto è già stato inserito nella lista dei favoriti");
       } else if (compareArr === false) {
         moviesArray.push(this.state.movies);
         await AsyncStorage.setItem("favMovies", JSON.stringify(moviesArray));
       }
-
-      //  AsyncStorage.getItem("favMovies").then((res) => console.warn(JSON.parse(res).length));
     } catch (error) {
       console.error(error);
     }
@@ -111,11 +92,6 @@ class MovieDetails extends React.Component {
     return (
       <ScrollView>
         <View style={styles.container}>
-          <Button
-            onPress={this.addTofavorite2}
-            title="aggiungi ai favoriti"
-            accessibilityLabel="Aggiungi ai favoriti i tuoi film preferiti "
-          />
           <Image
             source={{
               uri: `https://image.tmdb.org/t/p/w500/${
@@ -129,6 +105,13 @@ class MovieDetails extends React.Component {
           </Text>
         </View>
         <Text style={styles.overview}>{this.state.movies.overview}</Text>
+        <Button
+          color="#212121"
+          style={styles.buttonFavorite}
+          onPress={this.addTofavorite2}
+          title="aggiungi ai favoriti"
+          accessibilityLabel="Aggiungi ai favoriti i tuoi film preferiti "
+        />
       </ScrollView>
     );
   }
@@ -136,24 +119,33 @@ class MovieDetails extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative"
+    flex: 1
   },
   image: {
     width: 500,
-    height: 200
+    height: 250
   },
   title: {
     fontSize: 30,
     position: "absolute",
     bottom: 8,
     left: 16,
-    color: "#D32F2F"
+    color: "#ffffff",
+    textShadowColor: '#000',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 2,
   },
   overview: {
     fontSize: 24,
     padding: 20,
     textAlign: "left",
     color: "#212121"
+  },
+  buttonFavorite: {
+    backgroundColor: "#009688",
+    position: 'absolute',
+    bottom:0,
+    left:0,
   }
 });
 

@@ -1,4 +1,5 @@
 import React from "react";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import {
   Button,
   Text,
@@ -13,6 +14,21 @@ import {
 } from "react-native";
 
 class FavoriteMovies extends React.Component {
+  static navigationOptions = {
+    title:"Favorite movies",
+    headerStyle: {
+      backgroundColor: "red",
+    },
+    headerTintColor: "white",
+    headerTintStyle: {
+     fontWeight: 'bold',
+    },
+     tabBarIcon:(
+      <Icon name="favorite" color={"#ffc107"} size={25} />
+     )
+
+   };
+
   state = {
     favMovies: [],
     isFetching: false
@@ -23,9 +39,8 @@ class FavoriteMovies extends React.Component {
       <View
         style={{
           height: 1,
-          width: "86%",
+          width: "100%",
           backgroundColor: "#CED0CE",
-          marginLeft: "14%"
         }}
       />
     );
@@ -44,7 +59,7 @@ class FavoriteMovies extends React.Component {
           />
           <View style={styles.itemMeta}>
             <Text style={styles.itemName}>{item.title}</Text>
-            <Text style={styles.itemLastMessage}>{item.vote_average}</Text>
+            <Text style={styles.itemLastMessage}><Icon name='star' style={styles.icons}  />{item.vote_average}</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -98,10 +113,11 @@ class FavoriteMovies extends React.Component {
 
 const styles = StyleSheet.create({
   rootContainer: {
-   // backgroundColor: "#BDBDBD"
+    paddingTop: 20,
+    backgroundColor: "#cfd8dc",
   },
   viewContainer: {
-   // backgroundColor: "#E0E0E0",
+    backgroundColor: "#E0E0E0",
     flex: 1
   },
 
@@ -111,19 +127,25 @@ const styles = StyleSheet.create({
     flex: 1
   },
   itemMeta: {
-    marginLeft: 30,
+    marginLeft: 20,
     flexGrow: 1,
     width: 0
   },
+  icons: {
+    color: '#ffc107',
+    fontSize: 30,
+
+  },
   itemImage: {
-    width: 100,
+    width: 150,
     height: 100,
     borderRadius: 5,
     padding: 25
   },
   itemName: {
     color: "#212121",
-    fontSize: 25
+    fontSize: 25,
+
   },
   itemLastMessage: {
     fontSize: 20,
