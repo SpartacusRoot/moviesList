@@ -10,7 +10,8 @@ import {
   View,
   TouchableOpacity,
   AsyncStorage,
-  Platform
+  Platform,
+  ImageBackground
 } from "react-native";
 
 class MovieDetails extends React.Component {
@@ -83,13 +84,15 @@ class MovieDetails extends React.Component {
     return (
       <ScrollView>
         <View style={styles.container}>
-          <Image
+          <ImageBackground
+            style={styles.image}
             source={{
               uri: `https://image.tmdb.org/t/p/w500/${movies.backdrop_path}`
             }}
             style={styles.image}
-          />
+          >
           <Text style={styles.title}>{params.title}</Text>
+          </ImageBackground>
           <View style={styles.detailsContainer}>
             <Image
               style={styles.imagePoster}
@@ -97,7 +100,6 @@ class MovieDetails extends React.Component {
                 uri: `https://image.tmdb.org/t/p/w500/${movies.poster_path}`
               }}
             />
-
             <View style={styles.ratingContainer}>
               <View style={styles.taglineWrap}>
                 <Text style={styles.ratingContainerTitle}>
@@ -129,7 +131,12 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 500,
-    height: 250
+    height: 250,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    flexGrow: 0.4,
+    width:"100%",
   },
   detailsContainer: {
     flex: 1,
@@ -147,14 +154,14 @@ const styles = StyleSheet.create({
   taglineWrap: {
     flex: 1,
     flexGrow: 0.4,
-    maxWidth: "80%"
+    maxWidth: "75%"
   },
   ratingContainer: {
-    left: 20,
+    left: 30,
     flexDirection: "column"
   },
   ratings: {
-    fontSize: 30,
+    fontSize: 40,
     color: "#212121"
   },
   voteAverage: {
@@ -162,22 +169,20 @@ const styles = StyleSheet.create({
     color: "#ffa000"
   },
   ratingContainerTitle: {
+    paddingTop: 7,
     flex: 1,
-    fontSize: 30,
+    fontSize: 25,
     color: "#212121"
   },
   title: {
     fontSize: 30,
-    position: "absolute",
-    bottom: 268,
-    left: 16,
     color: "#ffffff",
     textShadowColor: "#000",
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 2
   },
   overview: {
-    fontSize: 24,
+    fontSize: 25,
     padding: 20,
     textAlign: "left",
     color: "#212121"

@@ -10,6 +10,7 @@ import {
   Button,
   StyleSheet,
   Image,
+  ImageBackground,
   AsyncStorage,
   RefreshControl
 } from "react-native";
@@ -80,17 +81,20 @@ class TopRated extends React.Component {
             })
           }
         >
-          <Image
+          <ImageBackground
             style={styles.itemImage}
             source={{
               uri: `https://image.tmdb.org/t/p/w500/${item.backdrop_path}`
             }}
-          />
+
+
+          >
           <Text style={styles.itemName}>{item.title}</Text>
           <Text style={styles.itemLastMessage}>
             <Icon name="star" style={styles.icons} />
             {item.vote_average}
           </Text>
+          </ImageBackground>
         </TouchableOpacity>
       </View>
     );
@@ -101,7 +105,6 @@ class TopRated extends React.Component {
     return (
       <View style={styles.container}>
         <FlatList
-          style={styles.list_container}
           data={this.state.movies}
           keyExtractor={(item, index) => index}
           renderItem={this.renderItem.bind(this)}
@@ -121,14 +124,14 @@ class TopRated extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 40,
+    alignItems: "center",
     backgroundColor: "#E0E0E0"
   },
   itemBlock: {
+    paddingTop: 7,
     flex: 1,
-    alignItems: "center",
-    alignItems: "center"
+    justifyContent: 'space-around',
+
   },
   icons: {
     color: "#ffc107",
@@ -138,23 +141,21 @@ const styles = StyleSheet.create({
     textShadowRadius: 20
   },
   itemImage: {
+
+    flexGrow:1,
+    alignItems: 'center',
+    justifyContent:'flex-end',
     width: 400,
     height: 200,
     borderRadius: 10,
-    opacity: 1
-  },
-  itemMeta: {
-    width: 400,
-    borderRadius: 10,
-    backgroundColor: "black"
   },
   itemName: {
     color: "#FFFFFF",
     fontSize: 25,
-    textAlign: "center",
-    position: "absolute",
-    bottom: 80,
-    left: 12,
+    alignItems: "flex-end",
+   // position: "absolute",
+ //  bottom: 80,
+ //   left: 12,
     textShadowColor: "#000",
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 2
@@ -162,9 +163,9 @@ const styles = StyleSheet.create({
   itemLastMessage: {
     fontSize: 30,
     color: "#212121",
-    textAlign: "left",
-    bottom: 40,
-    left: 12,
+    textAlign: "center",
+  //  bottom: 40,
+  //  left: 12,
     textShadowColor: "#FFFFFF",
     textShadowOffset: { width: -2, height: 1 },
     textShadowRadius: 10
