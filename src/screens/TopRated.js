@@ -23,15 +23,12 @@ class TopRated extends React.Component {
       vote_average: PropTypes.string
     }),
     isFetching: PropTypes.bool,
-    page: PropTypes.number,
-  }
+    page: PropTypes.number
+  };
 
   static navigationOptions = {
-   title:"Top Rated",
-    tabBarIcon:(
-     <Icon name="movie" color={"#ffc107"} size={25} />
-    )
-
+    title: "Top Rated",
+    tabBarIcon: <Icon name="movie" color={"#ffc107"} size={25} />
   };
 
   state = {
@@ -83,16 +80,18 @@ class TopRated extends React.Component {
             })
           }
         >
-
           <Image
             style={styles.itemImage}
             source={{
               uri: `https://image.tmdb.org/t/p/w500/${item.backdrop_path}`
             }}
           />
-            <Text style={styles.itemName}>{item.title}</Text>
-            <Text style={styles.itemLastMessage}><Icon name='star' style={styles.icons}  />{item.vote_average}</Text>
-            </TouchableOpacity>
+          <Text style={styles.itemName}>{item.title}</Text>
+          <Text style={styles.itemLastMessage}>
+            <Icon name="star" style={styles.icons} />
+            {item.vote_average}
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -124,34 +123,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 40,
-    backgroundColor: "#E0E0E0",
+    backgroundColor: "#E0E0E0"
   },
   itemBlock: {
-    flex:1,
+    flex: 1,
     alignItems: "center",
-    alignItems:'center',
-
+    alignItems: "center"
   },
   icons: {
-    color: '#ffc107',
+    color: "#ffc107",
     fontSize: 30,
-    textShadowColor: '#000',
-  textShadowOffset: {width: 2, height: 2},
-  textShadowRadius: 20,
+    textShadowColor: "#000",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 20
   },
   itemImage: {
     width: 400,
     height: 200,
     borderRadius: 10,
-    opacity: 1,
-
-
+    opacity: 1
   },
   itemMeta: {
-   width: 400,
-   borderRadius: 10,
-   backgroundColor: "black",
-
+    width: 400,
+    borderRadius: 10,
+    backgroundColor: "black"
   },
   itemName: {
     color: "#FFFFFF",
@@ -160,9 +155,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 80,
     left: 12,
-    textShadowColor: '#000',
-  textShadowOffset: {width: 2, height: 2},
-  textShadowRadius: 2,
+    textShadowColor: "#000",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 2
   },
   itemLastMessage: {
     fontSize: 30,
@@ -170,9 +165,9 @@ const styles = StyleSheet.create({
     textAlign: "left",
     bottom: 40,
     left: 12,
-    textShadowColor: '#FFFFFF',
-  textShadowOffset: {width: -2, height: 1},
-  textShadowRadius: 10,
+    textShadowColor: "#FFFFFF",
+    textShadowOffset: { width: -2, height: 1 },
+    textShadowRadius: 10
   }
 });
 

@@ -9,31 +9,30 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  Platform
 } from "react-native";
 
 class MovieDetails extends React.Component {
-  static navigationOptions = {
-    title: "Movies details",
-    tabBarVisible: false,
-    tabBarIcon:(
-      <Icon name="movie" color={"#ffc107"} size={25} />
-     )
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return {
+      title: params ? params.title : "Movies details",
+      tabBarVisible: false,
+      tabBarIcon: <Icon name="movie" color={"#ffc107"} size={25} />
+    };
   };
-
 
   static propTypes = {
     movie: PropTypes.object,
     favMovies: PropTypes.object,
-    moviesArray: PropTypes.arrayOf(PropTypes.favMovies),
-  }
-
+    moviesArray: PropTypes.arrayOf(PropTypes.favMovies)
+  };
 
   state = {
     movies: [],
     favMovies: []
   };
-
 
   addTofavorite2 = async () => {
     try {
@@ -65,10 +64,10 @@ class MovieDetails extends React.Component {
 
   fetchApiDetails = async () => {
     try {
-      //  let id = this.props.navigation.state.params.id;
+      let { params } = this.props.navigation.state;
       let response = await fetch(
         `https://api.themoviedb.org/3/movie/${
-          this.props.navigation.state.params.id
+          params.id
         }?api_key=a74169393e0da3cfbc2c58c5feec63d7`
       );
       let json = await response.json();
@@ -79,29 +78,46 @@ class MovieDetails extends React.Component {
   };
 
   render() {
+    const { params } = this.props.navigation.state;
+    const { movies } = this.state;
     return (
       <ScrollView>
         <View style={styles.container}>
           <Image
             source={{
-              uri: `https://image.tmdb.org/t/p/w500/${
-                this.state.movies.backdrop_path
-              }`
+              uri: `https://image.tmdb.org/t/p/w500/${movies.backdrop_path}`
             }}
             style={styles.image}
           />
-          <Text style={styles.title}>
-            {this.props.navigation.state.params.title}
-          </Text>
+          <Text style={styles.title}>{params.title}</Text>
+          <View style={styles.detailsContainer}>
+            <Image
+              style={styles.imagePoster}
+              source={{
+                uri: `https://image.tmdb.org/t/p/w500/${movies.poster_path}`
+              }}
+            />
+
+            <View style={styles.ratingContainer}>
+              <View style={styles.taglineWrap}>
+                <Text style={styles.ratingContainerTitle}>
+                  {movies.tagline}
+                </Text>
+              </View>
+              <Text style={styles.ratings}>Ratings</Text>
+              <Text style={styles.voteAverage}>{movies.vote_average}</Text>
+            </View>
+          </View>
         </View>
-        <Text style={styles.overview}>{this.state.movies.overview}</Text>
-        <Button
-          color="#212121"
-          style={styles.buttonFavorite}
-          onPress={this.addTofavorite2}
-          title="aggiungi ai favoriti"
-          accessibilityLabel="Aggiungi ai favoriti i tuoi film preferiti "
-        />
+        <Text style={styles.overview}>{movies.overview}</Text>
+        <View style={styles.elevationContainer}>
+          <TouchableOpacity
+            style={styles.buttonFavorite}
+            onPress={this.addTofavorite2}
+          >
+            <Text style={styles.FavoriteText}>Aggiungi ai favoriti</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     );
   }
@@ -115,15 +131,50 @@ const styles = StyleSheet.create({
     width: 500,
     height: 250
   },
+  detailsContainer: {
+    flex: 1,
+    flexDirection: "row"
+  },
+
+  imagePoster: {
+    position: "relative",
+    left: 10,
+    bottom: 20,
+    width: 150,
+    height: 220,
+    borderRadius: 5
+  },
+  taglineWrap: {
+    flex: 1,
+    flexGrow: 0.4,
+    maxWidth: "80%"
+  },
+  ratingContainer: {
+    left: 20,
+    flexDirection: "column"
+  },
+  ratings: {
+    fontSize: 30,
+    color: "#212121"
+  },
+  voteAverage: {
+    fontSize: 30,
+    color: "#ffa000"
+  },
+  ratingContainerTitle: {
+    flex: 1,
+    fontSize: 30,
+    color: "#212121"
+  },
   title: {
     fontSize: 30,
     position: "absolute",
-    bottom: 8,
+    bottom: 268,
     left: 16,
     color: "#ffffff",
-    textShadowColor: '#000',
-    textShadowOffset: {width: 2, height: 2},
-    textShadowRadius: 2,
+    textShadowColor: "#000",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 2
   },
   overview: {
     fontSize: 24,
@@ -131,11 +182,36 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: "#212121"
   },
+  elevationContainer: {
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: { width: 2, height: 2 },
+        shadowRadius: 10,
+        shadowOpacity: 1
+      },
+      android: {
+        elevation: 5
+      }
+    })
+  },
   buttonFavorite: {
-    backgroundColor: "#009688",
-    position: 'absolute',
-    bottom:0,
-    left:0,
+    flex: 1,
+    borderBottomWidth: 5,
+    borderBottomColor: "#757575",
+    backgroundColor: "#212121",
+    width: "75%",
+    justifyContent: "center",
+    alignSelf: "center",
+    borderRadius: 8,
+    height: 75,
+    marginBottom: 10,
+    marginTop: 10
+  },
+  FavoriteText: {
+    textAlign: "center",
+    fontSize: 25,
+    color: "#ffffff"
   }
 });
 
