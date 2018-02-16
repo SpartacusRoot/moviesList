@@ -91,7 +91,7 @@ class MovieDetails extends React.Component {
             }}
             style={styles.image}
           >
-          <Text style={styles.title}>{params.title}</Text>
+            <Text style={styles.title}>{params.title}</Text>
           </ImageBackground>
           <View style={styles.detailsContainer}>
             <Image
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     flexGrow: 0.4,
-    width:"100%",
+    width: "100%"
   },
   detailsContainer: {
     flex: 1,

@@ -57,7 +57,7 @@ class TopRated extends React.Component {
     this.setState({
       movies: [...this.state.movies, ...json.results],
       isFetching: false,
-      page: 1
+      page: this.state.page,
     });
   };
 
@@ -66,7 +66,8 @@ class TopRated extends React.Component {
   };
 
   loadMoreMovies = () => {
-    this.setState({ page: this.state.page + 1 }, this.fetchApi);
+  this.setState({ page: this.state.page + 1 }, this.fetchApi);
+
   };
 
   renderItem(movies) {
@@ -86,8 +87,6 @@ class TopRated extends React.Component {
             source={{
               uri: `https://image.tmdb.org/t/p/w500/${item.backdrop_path}`
             }}
-
-
           >
           <Text style={styles.itemName}>{item.title}</Text>
           <Text style={styles.itemLastMessage}>
@@ -104,12 +103,12 @@ class TopRated extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <FlatList
+      <FlatList
           data={this.state.movies}
           keyExtractor={(item, index) => index}
           renderItem={this.renderItem.bind(this)}
           onEndReached={this.loadMoreMovies}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={1}
           refreshControl={
             <RefreshControl
               refreshing={this.state.isFetching}
@@ -119,6 +118,7 @@ class TopRated extends React.Component {
         />
       </View>
     );
+
   }
 }
 
@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
   itemBlock: {
     paddingTop: 7,
     flex: 1,
-    justifyContent: 'space-around',
 
   },
   icons: {
@@ -141,7 +140,8 @@ const styles = StyleSheet.create({
     textShadowRadius: 20
   },
   itemImage: {
-
+    backgroundColor: "black",
+    opacity: 0.8,
     flexGrow:1,
     alignItems: 'center',
     justifyContent:'flex-end',
@@ -152,10 +152,6 @@ const styles = StyleSheet.create({
   itemName: {
     color: "#FFFFFF",
     fontSize: 25,
-    alignItems: "flex-end",
-   // position: "absolute",
- //  bottom: 80,
- //   left: 12,
     textShadowColor: "#000",
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 2
@@ -164,8 +160,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "#212121",
     textAlign: "center",
-  //  bottom: 40,
-  //  left: 12,
     textShadowColor: "#FFFFFF",
     textShadowOffset: { width: -2, height: 1 },
     textShadowRadius: 10

@@ -16,20 +16,18 @@ import {
 
 class FavoriteMovies extends React.Component {
   static navigationOptions = {
-    title:"Favorite movies",
+    title: "Favorite movies",
     headerStyle: {
-      backgroundColor: "#ffa000",
+      backgroundColor: "#ffa000"
     },
     headerTintColor: "white",
     headerTintStyle: {
-     fontWeight: 'bold',
+      fontWeight: "bold"
     },
-     tabBarIcon:(
-      <Icon name="favorite" color={"#ffc107"} size={25} />
-     )
-   };
+    tabBarIcon: <Icon name="favorite" color={"#ffc107"} size={25} />
+  };
 
-   static propTypes = {
+  static propTypes = {
     movies: PropTypes.shape({
       id: PropTypes.number,
       title: PropTypes.string,
@@ -37,8 +35,8 @@ class FavoriteMovies extends React.Component {
       vote_average: PropTypes.string
     }),
     isFetching: PropTypes.bool,
-    favMovies: PropTypes.objectOf(PropTypes.movies),
-  }
+    favMovies: PropTypes.objectOf(PropTypes.movies)
+  };
 
   state = {
     favMovies: [],
@@ -51,7 +49,7 @@ class FavoriteMovies extends React.Component {
         style={{
           height: 1,
           width: "100%",
-          backgroundColor: "#CED0CE",
+          backgroundColor: "#CED0CE"
         }}
       />
     );
@@ -61,13 +59,14 @@ class FavoriteMovies extends React.Component {
     let { item, index } = favMovies;
     return (
       <View style={styles.viewContainer}>
-        <TouchableOpacity style={styles.itemBlock}
-        onPress={() =>
-          this.props.navigation.navigate("MovieDetails", {
-            id: item.id,
-            title: item.title
-          })
-        }
+        <TouchableOpacity
+          style={styles.itemBlock}
+          onPress={() =>
+            this.props.navigation.navigate("MovieDetails", {
+              id: item.id,
+              title: item.title
+            })
+          }
         >
           <Image
             style={styles.itemImage}
@@ -77,7 +76,10 @@ class FavoriteMovies extends React.Component {
           />
           <View style={styles.itemMeta}>
             <Text style={styles.itemName}>{item.title}</Text>
-            <Text style={styles.itemLastMessage}><Icon name='star' style={styles.icons}  />{item.vote_average}</Text>
+            <Text style={styles.itemLastMessage}>
+              <Icon name="star" style={styles.icons} />
+              {item.vote_average}
+            </Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -129,7 +131,7 @@ class FavoriteMovies extends React.Component {
 const styles = StyleSheet.create({
   rootContainer: {
     paddingTop: 20,
-    backgroundColor: "#cfd8dc",
+    backgroundColor: "#cfd8dc"
   },
   viewContainer: {
     backgroundColor: "#E0E0E0",
@@ -147,9 +149,8 @@ const styles = StyleSheet.create({
     width: 0
   },
   icons: {
-    color: '#ffc107',
-    fontSize: 30,
-
+    color: "#ffc107",
+    fontSize: 30
   },
   itemImage: {
     width: 150,
@@ -159,8 +160,7 @@ const styles = StyleSheet.create({
   },
   itemName: {
     color: "#212121",
-    fontSize: 25,
-
+    fontSize: 25
   },
   itemLastMessage: {
     fontSize: 20,
