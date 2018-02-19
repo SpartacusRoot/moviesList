@@ -2,6 +2,7 @@ import React from "react";
 import { TabNavigator, StackNavigator } from "react-navigation";
 import MovieDetails from "../screens/MovieDetails";
 import TopRated from "../screens/TopRated";
+import TopRatedContainer from "../containers/topRatedContainer";
 import FavoriteMovies from "../screens/FavoriteMovies";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
