@@ -15,14 +15,13 @@ import {
   RefreshControl
 } from "react-native";
 
-import {TopRated} from '../screens/TopRated';
+import { TopRated } from "../screens/TopRated";
 
 class TopRatedCont extends React.Component {
-
   static navigationOptions = {
     title: "Top Rated",
     tabBarIcon: <Icon name="movie" color={"#ffc107"} size={25} />
- };
+  };
 
   state = {
     movies: [],
@@ -49,29 +48,25 @@ class TopRatedCont extends React.Component {
     this.setState({
       movies: [...this.state.movies, ...json.results],
       isFetching: false,
-      page: this.state.page,
+      page: this.state.page
     });
-
   };
-
-
 
   loadMoreMovies = () => {
-  this.setState({ page: this.state.page + 1 }, this.fetchApi);
-
+    this.setState({ page: this.state.page + 1 }, this.fetchApi);
   };
 
-render() {
-  return (
-
-<TopRated
-  movies={this.state.movies}  isFetching={this.state.isFetching} loadMoreMovies={this.loadMoreMovies} onRefresh={this.onRefresh}
-             navigate={this.props.navigation}/>
-
-  )
-}
-
-
+  render() {
+    return (
+      <TopRated
+        movies={this.state.movies}
+        isFetching={this.state.isFetching}
+        loadMoreMovies={this.loadMoreMovies}
+        onRefresh={this.onRefresh}
+        navigate={this.props.navigation}
+      />
+    );
+  }
 }
 
 export default TopRatedCont;

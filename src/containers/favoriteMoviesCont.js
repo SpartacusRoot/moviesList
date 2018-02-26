@@ -14,8 +14,7 @@ import {
   RefreshControl
 } from "react-native";
 
-import FavoriteMovies from '../screens/FavoriteMovies';
-
+import FavoriteMovies from "../screens/FavoriteMovies";
 
 class FavoriteMoviesCont extends React.Component {
   static navigationOptions = {
@@ -34,7 +33,6 @@ class FavoriteMoviesCont extends React.Component {
     favMovies: [],
     isFetching: false
   };
-
 
   componentDidMount() {
     this.update();
@@ -57,13 +55,16 @@ class FavoriteMoviesCont extends React.Component {
     }, 3500);
   };
 
-  render(){
+  render() {
     return (
-      <FavoriteMovies favMovies={this.state.favMovies}  isFetching={this.state.isFetching}  onRefresh={this.onRefresh}
-      navigation={this.props.navigation} />
+      <FavoriteMovies
+        favMovies={this.state.favMovies}
+        isFetching={this.state.isFetching}
+        onRefresh={this.onRefresh}
+        navigation={this.props.navigation}
+      />
     );
   }
 }
-
 
 export default FavoriteMoviesCont;

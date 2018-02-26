@@ -15,8 +15,7 @@ import {
 } from "react-native";
 
 import MovieDetails from "../screens/MovieDetails";
-import {addTofavorite2} from "../service/addTofavoriteService";
-
+import LocalStorage from "../services/asyncStorageWrapper";
 
 class MovieDetailsCont extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -28,38 +27,38 @@ class MovieDetailsCont extends React.Component {
     };
   };
 
-
-
   state = {
     movies: [],
     favMovies: []
   };
 
+  addTofavorite2 = async () => {
+    try {
+      let moviesArray = [];
+      const movies = this.state.movies;
+      const moviesGet = await LocalStorage.get("favMovies");
 
+      // const moviesGet = await AsyncStorage.getItem("favMovies");
+      if (moviesGet == null) {
+        moviesArray = [];
+      } else {
+        moviesArray = moviesGet;
+      }
 
-  // addTofavorite2 = async () => {
-  //   try {
-  //     let moviesArray = [];
-  //     const movies = this.state.movies;
-  //     const moviesGet = await AsyncStorage.getItem("favMovies");
-  //     if (moviesGet == null) {
-  //       moviesArray = [];
-  //     } else {
-  //       moviesArray = JSON.parse(moviesGet);
-  //     }
+      let compareArr = moviesArray.some(x => x.id === movies.id);
+      if (compareArr === true) {
+        alert("il film scelto è già stato inserito nella lista dei favoriti");
+      } else if (compareArr === false) {
+        moviesArray.push(this.state.movies);
+        LocalStorage.set("favMovies", moviesArray);
 
-  //     let compareArr = moviesArray.some(x => x.id === movies.id);
-  //     if (compareArr === true) {
-  //       alert("il film scelto è già stato inserito nella lista dei favoriti");
-  //     } else if (compareArr === false) {
-  //       moviesArray.push(this.state.movies);
-  //       await AsyncStorage.setItem("favMovies", JSON.stringify(moviesArray));
-  //       alert("Film salvato nei favoriti");
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+      //  await AsyncStorage.setItem("favMovies", JSON.stringify(moviesArray));
+        alert("Film salvato nei favoriti");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   componentDidMount() {
     this.fetchApiDetails();
@@ -84,11 +83,13 @@ class MovieDetailsCont extends React.Component {
     const { params } = this.props.navigation.state;
     const { movies } = this.state;
     return (
-      <MovieDetails movies={this.state.movies} navigation={this.props.navigation.state} addTofavorite={addTofavorite2}/>
+      <MovieDetails
+        movies={this.state.movies}
+        navigation={this.props.navigation.state}
+        addTofavorite={this.addTofavorite2}
+      />
     );
   }
 }
-
-
 
 export default MovieDetailsCont;

@@ -15,15 +15,11 @@ import {
 } from "react-native";
 
 class FavoriteMovies extends React.Component {
-
   static propTypes = {
     favMovies: PropTypes.array,
     isFetching: PropTypes.bool,
-    onRefresh: PropTypes.func.isRequired,
+    onRefresh: PropTypes.func.isRequired
   };
-
-
-
 
   renderSeparator = () => {
     return (
@@ -37,8 +33,8 @@ class FavoriteMovies extends React.Component {
     );
   };
 
-  renderItem({item}) {
-  //  let { item, index } = favMovies;
+  renderItem({ item }) {
+    //  let { item, index } = favMovies;
     return (
       <View style={styles.viewContainer}>
         <TouchableOpacity
@@ -109,7 +105,7 @@ const styles = StyleSheet.create({
   },
   icons: {
     color: "#ffc107",
-    fontSize: 20,
+    fontSize: 20
   },
   itemImage: {
     width: 150,
