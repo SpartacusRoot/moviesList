@@ -15,33 +15,15 @@ import {
 } from "react-native";
 
 class FavoriteMovies extends React.Component {
-  static navigationOptions = {
-    title: "Favorite movies",
-    headerStyle: {
-      backgroundColor: "#ffa000"
-    },
-    headerTintColor: "white",
-    headerTintStyle: {
-      fontWeight: "bold"
-    },
-    tabBarIcon: <Icon name="favorite" color={"#ffc107"} size={25} />
-  };
 
   static propTypes = {
-    movies: PropTypes.shape({
-      id: PropTypes.number,
-      title: PropTypes.string,
-      backdrop_path: PropTypes.string,
-      vote_average: PropTypes.string
-    }),
+    favMovies: PropTypes.array,
     isFetching: PropTypes.bool,
-    favMovies: PropTypes.objectOf(PropTypes.movies)
+    onRefresh: PropTypes.func.isRequired,
   };
 
-  state = {
-    favMovies: [],
-    isFetching: false
-  };
+
+
 
   renderSeparator = () => {
     return (
@@ -55,8 +37,8 @@ class FavoriteMovies extends React.Component {
     );
   };
 
-  renderItem(favMovies) {
-    let { item, index } = favMovies;
+  renderItem({item}) {
+  //  let { item, index } = favMovies;
     return (
       <View style={styles.viewContainer}>
         <TouchableOpacity
@@ -86,46 +68,23 @@ class FavoriteMovies extends React.Component {
     );
   }
   render() {
-    //  this.load();
-
     return (
       <View style={styles.rootContainer}>
         <FlatList
-          data={this.state.favMovies}
+          data={this.props.favMovies}
           ItemSeparatorComponent={this.renderSeparator}
           keyExtractor={(item, index) => index}
           renderItem={this.renderItem.bind(this)}
           refreshControl={
             <RefreshControl
-              refreshing={this.state.isFetching}
-              onRefresh={this.onRefresh.bind(this)}
+              refreshing={this.props.isFetching}
+              onRefresh={this.props.onRefresh.bind(this)}
             />
           }
         />
       </View>
     );
   }
-
-  componentDidMount() {
-    this.update();
-  }
-
-  onRefresh() {
-    this.setState({ isFetching: true }, this.update);
-  }
-
-  update = () => {
-    let updateMovies;
-    updateMovies = setInterval(async () => {
-      try {
-        const moviesGet = await AsyncStorage.getItem("favMovies");
-        const movies = JSON.parse(moviesGet);
-        this.setState({ favMovies: movies, isFetching: false });
-      } catch (error) {
-        this.setState({ error, isFetching: false });
-      }
-    }, 3500);
-  };
 }
 
 const styles = StyleSheet.create({
@@ -150,7 +109,7 @@ const styles = StyleSheet.create({
   },
   icons: {
     color: "#ffc107",
-    fontSize: 30
+    fontSize: 20,
   },
   itemImage: {
     width: 150,

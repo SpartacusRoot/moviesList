@@ -1,17 +1,24 @@
 import React from "react";
 import { TabNavigator, StackNavigator } from "react-navigation";
+import Icon from "react-native-vector-icons/MaterialIcons";
+
 import MovieDetails from "../screens/MovieDetails";
 import TopRated from "../screens/TopRated";
-import TopRatedContainer from "../containers/topRatedContainer";
 import FavoriteMovies from "../screens/FavoriteMovies";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import topRatedCont from "../containers/topRatedCont";
+import movieDetailsCont from "../containers/movieDetailsCont";
+import favoriteMoviesCont from "../containers/favoriteMoviesCont";
+
 
 export const FeedStack = StackNavigator({
   TopRated: {
-    screen: TopRated
+    screen: topRatedCont,
+    navigationOptions : {
+      title: 'Top Rated',
+    }
   },
   MovieDetails: {
-    screen: MovieDetails
+    screen: movieDetailsCont
   },
 
 },
@@ -30,7 +37,7 @@ export const FeedStack = StackNavigator({
 
 export const FeedStackFav = StackNavigator({
   FavoriteMovies: {
-    screen: FavoriteMovies,
+    screen: favoriteMoviesCont,
   }
 })
 
@@ -38,6 +45,7 @@ export const Tabs = TabNavigator(
   {
     TopRatedMovies: {
       screen: FeedStack,
+
     },
     FavoriteMovies: {
       screen: FeedStackFav,
